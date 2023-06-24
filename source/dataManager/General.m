@@ -8,9 +8,6 @@ classdef General < handle
         day = [];
         time = [];
         verbose = [];
-    end
-
-    properties (Access = protected)
         ephemeris = [];
     end
 
@@ -41,8 +38,14 @@ classdef General < handle
             rinexFilePath = obj.loadRinexFile(dir);
 
             % Parse Ephemeris from File
+            switch obj.extension
+                case ".rnx.gz"
+                    eph = rinexread(rinexFilePath);
+                    obj.ephemeris = eph.GPS;
 
+                case ".Z"
 
+            end
 
         end
 
@@ -51,42 +54,92 @@ classdef General < handle
             yearSuffix = num2str(obj.year);
 
             baseURL = "https://cddis.nasa.gov/archive/gnss/data/daily/";
-            fileURL = sprintf('%s/%s/%sn/',num2str(obj.year),string(obj.julianDay),yearSuffix(3:end));
-            filePath = sprintf('%s_%s_%sn',num2str(obj.year),string(obj.julianDay),yearSuffix(3:end));
-            url = append(baseURL, fileURL);
-            output_file_path = fullfile(dir.data,filePath);
-            [output_parent, output_name, output_ext] = fileparts(output_file_path);
+            webURL = sprintf('%s/%s/%sn/',num2str(obj.year),string(obj.julianDay),yearSuffix(3:end));
+            fileURL = sprintf('AMC400USA_R_%s%s0000_01D_GN.rnx.gz',num2str(obj.year),string(obj.julianDay));
+            url = append(baseURL, webURL,fileURL);
+            outputFilePath = fullfile(dir.data,fileURL);
+            [path,unzippedFile,~] = fileparts(outputFilePath);
 
-            if ~exist(output_file_path,'file')
+            if ~exist(append(path,filesep,unzippedFile),'file')
 
-                cddis_request(url, output_file_path)
+                obj.consoleText(1)
 
-                switch obj.extension
-                    case "gz"
-                        gunzip(output_file_path)
-                    case "Z"
-                        uncompress(output_file_path)
+                obj.downloadRinex(url,dir,fileURL)
+
+                obj.uncompressRinex(dir,fileURL)
+
+                obj.consoleText(2)
+
+            end
+
+            rinexFile = append(path,filesep,unzippedFile);
+
+        end
+
+        function downloadRinex(obj,url,dir,fileURL)
+
+            obj.checkPassword(dir);
+
+            system(sprintf('curl -s -c %scookies.txt --ciphers DEFAULT@SECLEVEL=1 --netrc-file %s -L -O %s',dir.data,dir.netRCFilePath,url));
+            
+            system(sprintf('mv %s %s',fileURL,dir.data));
+
+            system(sprintf('del %scookies.txt',dir.data));
+            
+        end
+
+        function uncompressRinex(obj,dir,fileURL)
+
+            switch obj.extension
+                case ".rnx.gz"
+                    gunzip(append(dir.data,fileURL));
+                    system(sprintf('del %s%s',dir.data,fileURL));
+                case ".gz"
+                    uncompress(append(dir.data,fileURL));
+            end
+
+        end
+
+        function checkPassword(~,dir)
+
+            if isempty(dir.login)
+
+                fprintf('[correlator-sim] https://cddis.nasa.gov username and password not found.\nPlease enter below:\n')
+                username = input('Username:','s');
+                password = input('Password:','s');
+                dir().createCDDISLoginFile(username,password);
+                dir().createNetRCFile(username,password);
+            elseif ~exist(append(dir.data,'.netrc'),"file")
+
+                username = dir.login.username;
+                password = dir.login.password;
+
+                dir().createNetRCFile(username,password);
+            end
+
+            
+
+            
+
+        end
+
+        function consoleText(obj,num)
+
+            if obj.verbose
+                switch num
+                    case 1
+                        fprintf('[correlator-sim] Rinex file for specified date not found. Downloading from https://cddis.nasa.gov\n')
+                    case 2
+                        fprintf('[correlator-sim] Rinex File successfully downloaded and unzipped! \n')
+                    case 3
+
+                    otherwise
                 end
 
-                fprintf("Successfully downloaded and unzipped the following file from cddis.nasa.gov: %s\n", ...
-                    strcat(output_name, output_ext))
+
             end
 
-            unzipped_file_path = fullfile(output_parent, output_name);
-
         end
-
-        function uncompress(file_name)
-
-            if ispc
-                str = strjoin({'7z e', char(file_name)});
-            else
-                str = strcat('uncompress', '  ', file_name);
-            end
-
-            system(string(str));
-        end
-
 
 
     end
@@ -99,9 +152,9 @@ classdef General < handle
 
         function extension = get.extension(obj)
             if obj.year > 2020
-                extension = "gz";
+                extension = ".rnx.gz";
             else
-                extension = "Z";
+                extension = ".gz";
             end
         end
 

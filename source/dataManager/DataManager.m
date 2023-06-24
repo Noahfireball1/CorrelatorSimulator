@@ -2,18 +2,27 @@ classdef DataManager < handle
     %DATAMANAGER Parses, Loads, and Creates settings needed to run the correlator sim
 
     properties (Access = public)
-        directories         = UserDirectories();
-        general             = General();
-        simulation          = Simulation();
-        trajectory          = Trajectory();
-        processing          = Processing();
-        plotting            = Plotting();
+        directories         = [];
+        general             = [];
+        simulation          = [];
+        trajectory          = [];
+        navigation          = [];
+        plotting            = [];
         constants           = Constants();
 
     end
 
     methods (Access = public)
-        function obj = DataManager(config)
+        function obj = DataManager(configFilePath)
+
+            config = ReadYaml(configFilePath);
+
+            obj.directories = UserDirectories();
+            obj.general = General(config.general,obj.directories);
+            obj.simulation = Simulation(config.simulation);
+            obj.trajectory = Trajectory(config.trajectory);
+            obj.navigation = Navigation(config.navigation);
+            obj.plotting = Plotting(config.plotting);
 
         end
 
