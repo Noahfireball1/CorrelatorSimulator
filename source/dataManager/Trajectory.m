@@ -1,22 +1,31 @@
 classdef Trajectory
-    %TRAJECTORY Summary of this class goes here
-    %   Detailed explanation goes here
+    %TRAJECTORY defines trajectory properties that the user defines
 
     properties
-        Property1
+        motion = [];
+        latitude = [];
+        longitude = [];
+        altitude = [];
+        velocity = [];
+        clockBias = [];
+        clockDrift = [];
+        ionosphereDelay = [];
+        troposphereDelay = [];
     end
 
     methods
-        function obj = Trajectory(inputArg1,inputArg2)
-        %TRAJECTORY Construct an instance of this class
-        %   Detailed explanation goes here
-        obj.Property1 = inputArg1 + inputArg2;
-        end
+        function obj = Trajectory(config)
 
-        function outputArg = method1(obj,inputArg)
-        %METHOD1 Summary of this method goes here
-        %   Detailed explanation goes here
-        outputArg = obj.Property1 + inputArg;
+            obj.motion = config.motion;
+            obj.latitude = config.latitude;
+            obj.longitude = config.longitude;
+            obj.altitude = config.altitude;
+            obj.velocity = str2num(config.velocity{1});
+            obj.clockBias = config.clockBias;
+            obj.clockDrift = config.clockDrift;
+            obj.ionosphereDelay = config.ionosphereDelay;
+            obj.troposphereDelay = config.troposphereDelay;
+
         end
     end
 end

@@ -23,4 +23,4 @@ end
 
 %% Initializing Simulation
 settings = DataManager(inputFilePath);
-sim = CorrelatorSim(settings);
+% sim = CorrelatorSim(settings);

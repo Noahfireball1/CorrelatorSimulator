@@ -1,26 +1,37 @@
 classdef Navigation
-    %PROCESSING Summary of this class goes here
-    %   Detailed explanation goes here
+    %Navigation defines properties associated with user-defined navigation parameters
 
     properties
         navFreq
+        
+    end
+
+    properties (Access = private)
+        sampleFreq
+        simTime
+    end
+
+    properties (Dependent)
         navFreqSamples
-        navDataLength
+        numUpdates
     end
 
 
-
     methods
-        function obj = Navigation(inputArg1,inputArg2)
-            %PROCESSING Construct an instance of this class
-            %   Detailed explanation goes here
-            obj.Property1 = inputArg1 + inputArg2;
+        function obj = Navigation(config,simulation)
+
+            obj.navFreq = config.frequency;
+            obj.sampleFreq = simulation.sampleFreq;
+            obj.simTime = simulation.time;
+            
+
         end
 
-        function outputArg = method1(obj,inputArg)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
-            outputArg = obj.Property1 + inputArg;
+        function navFreqSamples = get.navFreqSamples(obj)
+            navFreqSamples = obj.sampleFreq/obj.navFreq;
+        end
+        function numUpdates = get.numUpdates(obj)
+            numUpdates = obj.navFreq*obj.simTime;
         end
     end
 end

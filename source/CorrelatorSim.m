@@ -1,4 +1,4 @@
-classdef correlatorSim
+classdef CorrelatorSim
     %CORRELATORSIM Summary of this class goes here
     %   Detailed explanation goes here
 
@@ -7,7 +7,7 @@ classdef correlatorSim
     end
 
     methods
-        function obj = correlatorSim(inputArg1,inputArg2)
+        function obj = CorrelatorSim(inputArg1,inputArg2)
         %CORRELATORSIM Construct an instance of this class
         %   Detailed explanation goes here
         obj.Property1 = inputArg1 + inputArg2;

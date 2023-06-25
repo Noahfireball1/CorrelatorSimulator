@@ -3,20 +3,17 @@ classdef Plotting
     %   Detailed explanation goes here
 
     properties
-        Property1
+        docked = [];
+        tiled = [];
     end
 
     methods
-        function obj = Plotting(inputArg1,inputArg2)
-        %PLOTTING Construct an instance of this class
-        %   Detailed explanation goes here
-        obj.Property1 = inputArg1 + inputArg2;
+
+        function obj = Plotting(config)
+            obj.docked = config.docked;
+            obj.tiled = config.tiled;
+
         end
 
-        function outputArg = method1(obj,inputArg)
-        %METHOD1 Summary of this method goes here
-        %   Detailed explanation goes here
-        outputArg = obj.Property1 + inputArg;
-        end
     end
 end

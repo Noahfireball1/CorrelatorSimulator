@@ -8,7 +8,6 @@ classdef DataManager < handle
         trajectory          = [];
         navigation          = [];
         plotting            = [];
-        constants           = Constants();
 
     end
 
@@ -21,7 +20,7 @@ classdef DataManager < handle
             obj.general = General(config.general,obj.directories);
             obj.simulation = Simulation(config.simulation);
             obj.trajectory = Trajectory(config.trajectory);
-            obj.navigation = Navigation(config.navigation);
+            obj.navigation = Navigation(config.navigation,config.simulation);
             obj.plotting = Plotting(config.plotting);
 
         end

@@ -8,13 +8,14 @@ general:
   verbose: 1
 simulation:
   update: scalar # vector or scalar
+  sampleFreq: 16.368e6
   initPSR: examplePseudoranges
   initTime: 86465
   time: 50 # [s]
   noise: 0
   CN0: 20
 trajectory:
-  motion: 0
+  motion: static
   latitude: 32.5
   longitude: -85.5
   altitude: 0
@@ -26,5 +27,5 @@ trajectory:
 navigation:
   frequency: 5
 plotting:
-  scalar: 0
-  vector: 0
+  docked: 0
+  tiled: 0
