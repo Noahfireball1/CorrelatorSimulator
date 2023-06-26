@@ -4,7 +4,7 @@ general:
   year: 2022
   month: 12
   day: 22
-  time: 1200
+  time: 0000
   verbose: 1
 simulation:
   update: scalar # vector or scalar

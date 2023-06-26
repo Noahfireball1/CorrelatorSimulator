@@ -1,11 +1,11 @@
-classdef Simulation
+classdef Simulation < handle
     %SIMULATION defines settings specific to the correlator simulation
 
     properties
-
+        method
         sampleFreq
         numSeconds
-
+        initialTransmitTime
     end
 
     properties (Constant)
@@ -19,25 +19,36 @@ classdef Simulation
         pdiTime = 20e-3;
         codeOffset = 0.5;
         codeLength = 1023;
-
     end
 
     properties (Dependent)
-
         dataLength
         numSamples
         gpsL1WaveLength
         gpsPRNSequences
         chipWidth
-
     end
 
     methods
-        function obj = Simulation(config)
+        function obj = Simulation(config,general)
 
             obj.sampleFreq = config.sampleFreq;
             obj.numSeconds = config.time;
 
+            obj.calcInitialTransmitTime(general)
+        end
+        function calcInitialTransmitTime(obj,general)
+            year = general.year;
+            month = general.month;
+            inputDay = general.day;
+            hour = floor(general.time/100);
+            minute = floor(general.time - 100*hour);
+            seconds = 0;
+
+
+            date = datetime(year,month,inputDay,hour,minute,seconds);
+            dayofWeek = day(date,'dayofweek');
+            obj.initialTransmitTime = (24*dayofWeek + hour + minute/60)*60*60;
         end
 
         function dataLength = get.dataLength(obj)

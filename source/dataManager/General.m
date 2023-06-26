@@ -116,11 +116,6 @@ classdef General < handle
 
                 dir().createNetRCFile(username,password);
             end
-
-            
-
-            
-
         end
 
         function consoleText(obj,num)
@@ -135,13 +130,8 @@ classdef General < handle
 
                     otherwise
                 end
-
-
             end
-
         end
-
-
     end
 
     methods
