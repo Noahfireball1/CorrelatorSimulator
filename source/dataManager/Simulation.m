@@ -5,6 +5,7 @@ classdef Simulation < handle
         method
         sampleFreq
         numSeconds
+        CN0
         initialTransmitTime
     end
 
@@ -34,6 +35,7 @@ classdef Simulation < handle
 
             obj.sampleFreq = config.sampleFreq;
             obj.numSeconds = config.time;
+            obj.CN0 = config.CN0;
 
             obj.calcInitialTransmitTime(general)
         end
@@ -41,8 +43,8 @@ classdef Simulation < handle
             year = general.year;
             month = general.month;
             inputDay = general.day;
-            hour = floor(general.time/100);
-            minute = floor(general.time - 100*hour);
+            hour = 0;
+            minute = 0;
             seconds = 0;
 
 

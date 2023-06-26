@@ -24,7 +24,6 @@ classdef General < handle
             obj.year = config.year;
             obj.month = config.month;
             obj.day = config.day;
-            obj.time = config.time;
             obj.verbose = config.verbose;
 
             obj.loadEphemeris(dir);
@@ -41,11 +40,15 @@ classdef General < handle
             switch obj.extension
                 case ".rnx.gz"
                     eph = rinexread(rinexFilePath);
-                    obj.ephemeris = eph.GPS;
+                    eph = eph.GPS;
 
                 case ".Z"
 
             end
+
+            % Select only ephemeris at 0000 hrs
+            timeIdxs = eph.Time == datetime(obj.year,obj.month,obj.day,0,0,0);
+            obj.ephemeris = eph(timeIdxs,:);
 
         end
 

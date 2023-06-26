@@ -6,6 +6,7 @@ classdef Trajectory
         latitude = [];
         longitude = [];
         altitude = [];
+        position = [];
         velocity = [];
         clockBias = [];
         clockDrift = [];
@@ -20,6 +21,7 @@ classdef Trajectory
             obj.latitude = config.latitude;
             obj.longitude = config.longitude;
             obj.altitude = config.altitude;
+            obj.position = lla2ecef([obj.latitude obj.longitude obj.altitude]);
             obj.velocity = str2num(config.velocity{1});
             obj.clockBias = config.clockBias;
             obj.clockDrift = config.clockDrift;
