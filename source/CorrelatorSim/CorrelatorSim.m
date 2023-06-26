@@ -2,6 +2,8 @@ classdef CorrelatorSim < handle
     %CORRELATORSIM simulates on the correlator level and then performs scalar or vector tracking
 
     properties (Access = public)
+        satellitePositions
+        reference
 
     end
     properties (Access = public)
@@ -13,7 +15,7 @@ classdef CorrelatorSim < handle
         plotting
     end
 
-    methods
+    methods (Access = public)
         function obj = CorrelatorSim(settings)
             obj.grabSettings(settings)
 
@@ -23,10 +25,15 @@ classdef CorrelatorSim < handle
 
             eph = obj.gen.ephemeris;
             transmitTime = obj.sim.initialTransmitTime;
-            transitTime = 0.068;
+            position = obj.traj.position;
 
-            SatellitePositions(eph,transmitTime,transitTime)
+            obj.satellitePositions = SatellitePositions(eph,transmitTime,position);
             
+        end
+
+        function initializeReference(obj)
+
+            obj.reference = Reference(obj);
         end
     end
 
