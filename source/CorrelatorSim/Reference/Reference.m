@@ -1,10 +1,4 @@
 classdef Reference < dynamicprops
-    %REFERENCE Summary of this class goes here
-    %   Detailed explanation goes here
-
-    properties (Access = public)
-        
-    end
 
     methods
         function obj = Reference(sim)
@@ -18,7 +12,7 @@ classdef Reference < dynamicprops
                 obj.(channelName) = obj.addprop(channelName);
 
                 % Initialize Channel
-                obj.(channelName) = Channel(sim,sv);
+                obj.(channelName) = ReferenceChannel(sim,sv);
                 
                 
             end

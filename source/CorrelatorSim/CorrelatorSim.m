@@ -4,6 +4,7 @@ classdef CorrelatorSim < handle
     properties (Access = public)
         satellitePositions
         reference
+        estimate
 
     end
     properties (Access = public)
@@ -34,6 +35,11 @@ classdef CorrelatorSim < handle
         function initializeReference(obj)
 
             obj.reference = Reference(obj);
+        end
+
+        function initializeEstimate(obj)
+
+            obj.estimate = Estimate(obj);
         end
     end
 

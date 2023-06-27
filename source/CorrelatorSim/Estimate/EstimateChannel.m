@@ -1,41 +1,35 @@
-classdef Channel < handle
+classdef EstimateChannel < handle
     %CHANNEL Summary of this class goes here
     %   Detailed explanation goes here
 
     properties (Access = public)
-        receiveTime
-        transmitTime
         prn
+        cnoL1
         losVel
-        carrierFreq
+        carrFreq
         doppler
         codeFreq
         codePhase
         phase
-        cno
-        initCodePhase
-        initTransmitTime
+        codeError
+        oldCarrierError
+        oldCodeError
+        carrierError
+        oldFreqError
+        oldCodeFreq
+        oldCarrierFreq
+        receiveTime
+        transmitTime
+        updateCounter
+        codePeriodCounter
+        initialReceiveTime
+        initialTransmitTime
+        dopplerRate
+        oldCarrier
+        newCodePeriodStarted
     end
     methods (Access = public)
-        function obj = Channel(sim,sv)
-
-            svProps = sim.satellitePositions;
-            userTraj = sim.traj;
-            simFreq = sim.sim;
-
-
-            obj.receiveTime = svProps.transmitTime + svProps.transitTime(sv);
-            obj.transmitTime = obj.calcTransmitTime(svProps,userTraj,sv);
-            obj.prn = svProps.ID(sv);
-            obj.losVel = obj.calcVelocity(userTraj,svProps,sv);
-            obj.carrierFreq = obj.calcCarrierFreq(svProps,userTraj,simFreq);
-            obj.doppler = obj.carrierFreq - simFreq.intermedFreq;
-            obj.codeFreq = obj.doppler*simFreq.chipFreq/simFreq.gpsL1Freq + simFreq.chipFreq;
-            obj.codePhase = obj.calcCodePhase(simFreq);
-            obj.phase = obj.calcPhase(svProps,userTraj,simFreq,sv);
-            obj.cno = 10^(simFreq.CN0/10);
-            obj.initCodePhase = obj.codePhase;
-            obj.initTransmitTime = obj.transmitTime;
+        function obj = EstimateChannel(sim,sv)
 
         end
     end
