@@ -35,13 +35,21 @@ classdef Estimate < dynamicprops
                 obj.(channelName) = obj.addprop(channelName);
 
                 % Initialize Channel,Filter
-                obj.(channelName) = EstimateChannel(sim,sv);
+                phaseError = obj.calcPhaseError(sim,sv);
+                obj.(channelName) = EstimateChannel(sim,phaseError,sv);
                 obj.(channelName).filter = EstimateFilter(sim,sv);
-
 
             end
 
         end
 
+        function phaseError = calcPhaseError(obj,sim,sv)
+            posErr = sim.traj.position' - obj.position_ecef;
+            rangeErr = sim.satellitePositions.unitVectors(sv,:)*(posErr);
+            totTimeErr = rangeErr/sim.sim.C;
+            phaseError = totTimeErr*sim.sim.chipFreq;
+        end
+
     end
+
 end

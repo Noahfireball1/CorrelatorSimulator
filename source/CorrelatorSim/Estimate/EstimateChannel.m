@@ -37,7 +37,7 @@ classdef EstimateChannel < handle
 
 
     methods (Access = public)
-        function obj = EstimateChannel(sim,sv)
+        function obj = EstimateChannel(sim,phaseError,sv)
             svProps = sim.satellitePositions;
             userTraj = sim.traj;
             simFreq = sim.sim;
@@ -49,8 +49,8 @@ classdef EstimateChannel < handle
             obj.carrierFreq = obj.calcCarrierFreq(svProps,userTraj,simFreq);
             obj.doppler = obj.carrierFreq - simFreq.intermedFreq;
             obj.codeFreq = obj.doppler*simFreq.chipFreq/simFreq.gpsL1Freq + simFreq.chipFreq;
-            obj.codePhase = ref.channel1.codePhase - obj.calcPhaseError(sim);
-            obj.phase = ref.channel1.phase - obj.calcInitialCarrPhaseError(sim);
+            obj.codePhase = ref.channel1.codePhase - phaseError;
+            obj.phase = ref.channel1.phase - obj.calcInitialCarrPhaseError(phaseError,sim);
             obj.oldCodeFreq = obj.codeFreq;
             obj.oldCarrierFreq = obj.carrierFreq;
             obj.receiveTime = ref.channel1.receiveTime;
@@ -60,7 +60,7 @@ classdef EstimateChannel < handle
             obj.initialTransmitTime = obj.transmitTime;
             obj.dopplerRate = -obj.phase;
             obj.oldCarrier = obj.dopplerRate;
-            obj.filter = EstimateFilter(sim);
+            obj.filter = EstimateFilter(sim,obj.carrierFreq);
 
 
 
@@ -104,17 +104,14 @@ classdef EstimateChannel < handle
             phase = -(range + userTraj.ionosphereDelay + userTraj.troposphereDelay + userTraj.clockBias - svProps.svClockCorr(sv)*svProps.C)/freqs.gpsL1WaveLength;
         end
 
-        function initialCarrPhaseError = calcInitialCarrPhaseError(obj,sim)
-            phaseError = obj.calcPhaseError(sim);
-            initialCarrPhaseError = mod((obj.initial_range_error*sim.reference.carrFreq/sim.simulation.C*2*pi),2*pi);
+        function initialCarrPhaseError = calcInitialCarrPhaseError(~,phaseError,sim)
+            initialRangeError = phaseError/sim.sim.chipFreq*sim.sim.C;
+            initialCarrPhaseError = mod((initialRangeError*sim.reference.channel1.carrierFreq/sim.sim.C*2*pi),2*pi);
             if initialCarrPhaseError > pi
                 initialCarrPhaseError = initialCarrPhaseError - 2*pi;
             end
         end
 
-        function phaseError = calcPhaseError(obj,sim)
-            phaseError = 1;
-        end
 
     end
 
