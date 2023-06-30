@@ -30,6 +30,8 @@ classdef LoopFilters < handle
             if nameValue.order == 3
                 obj.coeffB = nameValue.coeffB;
                 obj.naturalFreq = obj.bandWidth/0.7845;
+            else
+                obj.naturalFreq = obj.bandWidth/0.53;
             end
 
         end

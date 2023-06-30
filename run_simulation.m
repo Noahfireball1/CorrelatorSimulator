@@ -33,57 +33,10 @@ sim.initializeReference;
 sim.initializeEstimate;
 %% Initialize Loop Filters
 sim.initializeLoopFilters;
-
-
-%% least square position estimation from carrier phase
-lsPos = est.state.vector(est.state.posIdx);
-lsVel = est.state.vector(est.state.velIdx);
-lsClk = est.state.vector(est.state.clkIdx);
-lsDft = est.state.vector(est.state.dftIdx);
-ls.state.vector = est.state.vector;
-ls.state.covariance = est.state.covariance;
-
-%% Tracking Loop Parameters
-% third order PLL
-carrierBW = 10;
-carrierBW = carrierBW/0.7845;
-codeA = 1.1;
-codeB = 2.4;
-track.third.kCarrier1 = carrierBW^3*(constants.pdiTime^2) + codeA*carrierBW^2*constants.pdiTime + codeB*carrierBW;
-track.third.kCarrier2 = -(codeA*carrierBW^2*(constants.pdiTime) + 2*codeB*carrierBW);
-track.third.kCarrier3 = codeB*carrierBW;
-
-% second order PLL
-% carrierBW = 7.;
-carrierBW2 = 2;
-carrierWN2 = carrierBW/0.53;
-carrierA = 1.414;
-track.second.kCarrier1 = carrierWN2^2*(constants.pdiTime) + carrierA*carrierWN2;
-track.second.kCarrier2 = -carrierA*carrierWN2;
-
-% third order DLL
-codeBW = 2;
-codeWN = codeBW/0.7845;
-codeA = 1.1;
-codeB = 2.4;
-track.third.kCode1 = codeWN^3*(constants.pdiTime^2) + codeA*codeWN^2*constants.pdiTime + codeB*codeWN;
-track.third.kCode2 = -(codeA*codeWN^2*(constants.pdiTime) + 2*codeB*codeWN);
-track.third.kCode3 = codeB*codeWN;
-
-% second order DLL
-codeBW = 2.;
-codeWN = carrierBW/0.53;
-codeA = 1.414;
-track.second.kCode1 = codeWN^2*(constants.pdiTime) + codeA*codeWN;
-track.second.kCode2 = -codeA*codeWN;
-
-% second order FLL
-fllBW = 3.5;
-fllWN = carrierBW/0.53;
-carrierA = 1.414;
-track.second.kFreq1 = fllWN^2*(constants.pdiTime)^2 + carrierA*fllWN*constants.pdiTime;
-track.second.kFreq2 = -carrierA*fllWN*constants.pdiTime;
-
+%% Initialize Scalar Data
+sim.initializeScalar;
+%% Initialize Navigation Data
+sim.initializeNavigation;
 %% Saved Data Structs
 % data stucture for storing channel data
 scalar.carrierError = NaN(true.numChannels,channel_data_length);
@@ -138,19 +91,6 @@ reference.pos = NaN(3,nav_data_length);
 reference.vel = NaN(3,nav_data_length);
 reference.clkBias = NaN(1,nav_data_length);
 reference.clkDrft = NaN(1,nav_data_length);
-
-% vector for intermediate calculations
-codePhaseErrAccum = zeros(true.numChannels,1);
-phaseErrAccum = zeros(true.numChannels,1);
-freqErrAccum = zeros(true.numChannels,1);
-integratedSamplesCount = zeros(true.numChannels,1);
-avgAmp = zeros(true.numChannels,1);
-avgNoiseVar = zeros(true.numChannels,1);
-pastMiddle = zeros(true.numChannels,1);
-trajectoryUpdate = ones(true.numChannels,1);
-measTrueRange = zeros(true.numChannels,1);
-lsPhase = zeros(true.numChannels,1);
-lsDeltaPhase = zeros(true.numChannels,1);
 
 %% Main Loop Parameters
 eof = 0;

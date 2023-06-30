@@ -6,6 +6,8 @@ classdef CorrelatorSim < handle
         reference
         estimate
         loopFilters
+        scalar
+        navigation
 
     end
     properties (Access = public)
@@ -15,6 +17,10 @@ classdef CorrelatorSim < handle
         traj
         nav
         plotting
+    end
+    properties (Access = private)
+        numChannels
+        dataLength
     end
 
     methods (Access = public)
@@ -30,7 +36,7 @@ classdef CorrelatorSim < handle
             position = obj.traj.position;
 
             obj.satellitePositions = SatellitePositions(eph,transmitTime,position);
-            
+
         end
 
         function initializeReference(obj)
@@ -44,12 +50,25 @@ classdef CorrelatorSim < handle
         end
 
         function initializeLoopFilters(obj)
+            obj.loopFilters = LoopFiltersDataClass();
 
             obj.loopFilters.PLL3 = PLL3(obj.sim.pdiTime);
             obj.loopFilters.PLL2 = PLL2(obj.sim.pdiTime);
             obj.loopFilters.DLL3 = DLL3(obj.sim.pdiTime);
             obj.loopFilters.DLL2 = DLL2(obj.sim.pdiTime);
             obj.loopFilters.FLL2 = FLL2(obj.sim.pdiTime);
+        end
+
+        function initializeScalar(obj)
+
+            obj.scalar = Scalar();
+
+        end
+
+        function initializeNavigation(obj)
+
+            obj.navigation = NavigationDataClass();
+
         end
     end
 

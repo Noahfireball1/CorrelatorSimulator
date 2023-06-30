@@ -2,21 +2,23 @@ classdef DLL3 < LoopFilters
     %PLL3 Summary of this class goes here
     %   Detailed explanation goes here
 
-    properties
-        Property1
+    properties (Access = public)
+        gain3
     end
 
     methods
-        function obj = DLL3(inputArg1,inputArg2)
-        %PLL3 Construct an instance of this class
-        %   Detailed explanation goes here
-        obj.Property1 = inputArg1 + inputArg2;
-        end
+        function obj = DLL3(pdiTime)
 
-        function outputArg = method1(obj,inputArg)
-        %METHOD1 Summary of this method goes here
-        %   Detailed explanation goes here
-        outputArg = obj.Property1 + inputArg;
+            % Assign PLL Parameters
+            obj.assignProperties(bandwidth=2,coeffA=1.1,coeffB=2.4,order=3);
+
+            % Calculate Gains 1,2,3
+            obj.gain1 = obj.naturalFreq^3*(pdiTime^2) + obj.coeffA*obj.naturalFreq^2*pdiTime + obj.coeffB*obj.naturalFreq;
+
+            obj.gain2 = -(obj.coeffA*obj.naturalFreq^2*(pdiTime) + 2*obj.coeffB*obj.naturalFreq);
+
+            obj.gain3 = obj.coeffB*obj.naturalFreq;
+
         end
     end
 end
