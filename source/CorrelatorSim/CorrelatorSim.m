@@ -5,6 +5,7 @@ classdef CorrelatorSim < handle
         satellitePositions
         reference
         estimate
+        loopFilters
 
     end
     properties (Access = public)
@@ -40,6 +41,15 @@ classdef CorrelatorSim < handle
         function initializeEstimate(obj)
 
             obj.estimate = Estimate(obj);
+        end
+
+        function initializeLoopFilters(obj)
+
+            obj.loopFilters.PLL3 = PLL3(obj.sim.pdiTime);
+            obj.loopFilters.PLL2 = PLL2(obj.sim.pdiTime);
+            obj.loopFilters.DLL3 = DLL3(obj.sim.pdiTime);
+            obj.loopFilters.DLL2 = DLL2(obj.sim.pdiTime);
+            obj.loopFilters.FLL2 = FLL2(obj.sim.pdiTime);
         end
     end
 

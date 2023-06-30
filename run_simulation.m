@@ -31,6 +31,8 @@ sim.calcSVPos;
 sim.initializeReference;
 %% initialize Estimated Data
 sim.initializeEstimate;
+%% Initialize Loop Filters
+sim.initializeLoopFilters;
 
 
 %% least square position estimation from carrier phase
