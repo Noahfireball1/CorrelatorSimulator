@@ -54,7 +54,7 @@ classdef Simulation < handle
         end
 
         function dataLength = get.dataLength(obj)
-            dataLength = obj.numSamples/obj.pdiTime;
+            dataLength = obj.numSamples*obj.pdiTime;
         end
         function numSamples = get.numSamples(obj)
             numSamples = obj.numSeconds*obj.sampleFreq;

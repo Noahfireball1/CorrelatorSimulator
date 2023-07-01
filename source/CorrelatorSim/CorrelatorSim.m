@@ -18,7 +18,7 @@ classdef CorrelatorSim < handle
         nav
         plotting
     end
-    properties (Access = private)
+    properties (Dependent)
         numChannels
         dataLength
     end
@@ -41,7 +41,9 @@ classdef CorrelatorSim < handle
 
         function initializeReference(obj)
 
-            obj.reference = Reference(obj);
+            navLength = obj.nav.numUpdates;
+
+            obj.reference = Reference(obj,obj.numChannels,obj.dataLength,navLength);
         end
 
         function initializeEstimate(obj)
@@ -61,13 +63,13 @@ classdef CorrelatorSim < handle
 
         function initializeScalar(obj)
 
-            obj.scalar = Scalar();
+            obj.scalar = Scalar(obj.numChannels,obj.dataLength);
 
         end
 
         function initializeNavigation(obj)
 
-            obj.navigation = NavigationDataClass();
+            obj.navigation = NavigationDataClass(obj.numChannels,obj.dataLength);
 
         end
     end
@@ -85,5 +87,14 @@ classdef CorrelatorSim < handle
 
         end
 
+    end
+
+    methods
+        function numChannels = get.numChannels(obj)
+            numChannels = size(obj.satellitePositions.svPosX,1);
+        end
+        function dataLength = get.dataLength(obj)
+            dataLength = obj.sim.dataLength;
+        end
     end
 end

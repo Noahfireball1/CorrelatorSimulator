@@ -37,60 +37,6 @@ sim.initializeLoopFilters;
 sim.initializeScalar;
 %% Initialize Navigation Data
 sim.initializeNavigation;
-%% Saved Data Structs
-% data stucture for storing channel data
-scalar.carrierError = NaN(true.numChannels,channel_data_length);
-scalar.avgCarrError = NaN(true.numChannels,channel_data_length);
-scalar.codeError = NaN(true.numChannels,channel_data_length);
-scalar.carrFreqError = NaN(true.numChannels,channel_data_length);
-scalar.codeFreqError = NaN(true.numChannels,channel_data_length);
-scalar.carrDisc = NaN(true.numChannels,channel_data_length);
-scalar.codeDisc = NaN(true.numChannels,channel_data_length);
-scalar.IP = NaN(true.numChannels,channel_data_length);
-scalar.QP = NaN(true.numChannels,channel_data_length);
-scalar.IE = NaN(true.numChannels,channel_data_length);
-scalar.QE = NaN(true.numChannels,channel_data_length);
-scalar.IL = NaN(true.numChannels,channel_data_length);
-scalar.QL = NaN(true.numChannels,channel_data_length);
-scalar.receiveTime = NaN(true.numChannels,channel_data_length);
-scalar.transmitTime = NaN(true.numChannels,channel_data_length);
-scalar.rangeRes = NaN(true.numChannels,channel_data_length);
-
-% data structure for storing estimated navigation solution
-nav.pos = NaN(3,nav_data_length);
-nav.vel = NaN(3,nav_data_length);
-nav.clkBias = NaN(1,nav_data_length);
-nav.clkDrft = NaN(1,nav_data_length);
-nav.rangeRes = NaN(true.numChannels,nav_data_length);
-nav.rateRes = NaN(true.numChannels,nav_data_length);
-nav.receiveTime = NaN(1,nav_data_length);
-nav.cnoL1 = NaN(true.numChannels,nav_data_length);
-nav.lsPos = NaN(3,nav_data_length);
-nav.lsVel = NaN(3,nav_data_length);
-nav.lsClkBias = NaN(1,nav_data_length);
-nav.lsClkDrft = NaN(1,nav_data_length);
-nav.covariance = NaN(8,nav_data_length);
-nav.rangeResVar = NaN(true.numChannels,nav_data_length);
-nav.rateResVar = NaN(true.numChannels,nav_data_length);
-
-
-% data structure for storing all true parameters channel and nav
-reference.carrPhase = NaN(true.numChannels,channel_data_length);
-reference.codePhase = NaN(true.numChannels,channel_data_length);
-reference.carrFreq = NaN(true.numChannels,channel_data_length);
-reference.codeFreq = NaN(true.numChannels,channel_data_length);
-reference.receiveTime = NaN(true.numChannels,channel_data_length);
-reference.transmitTime = NaN(true.numChannels,channel_data_length);
-
-% true nav data
-reference.el = NaN(true.numChannels,nav_data_length);
-reference.az = NaN(true.numChannels,nav_data_length);
-reference.rangeError = NaN(true.numChannels,nav_data_length);
-reference.posError = NaN(3,nav_data_length);
-reference.pos = NaN(3,nav_data_length);
-reference.vel = NaN(3,nav_data_length);
-reference.clkBias = NaN(1,nav_data_length);
-reference.clkDrft = NaN(1,nav_data_length);
 
 %% Main Loop Parameters
 eof = 0;
