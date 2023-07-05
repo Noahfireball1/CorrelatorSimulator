@@ -27,8 +27,58 @@ classdef CorrelatorSim < handle
         function obj = CorrelatorSim(settings)
             obj.grabSettings(settings)
 
+            % Calculating Initial Satellite Positions
+            obj.calcSVPos;
+            % Initialize Reference Data
+            obj.initializeReference;
+            % initialize Estimated Data
+            obj.initializeEstimate;
+            % Initialize Loop Filters
+            obj.initializeLoopFilters;
+            % Initialize Scalar Data
+            obj.initializeScalar;
+            % Initialize Navigation Data
+            obj.initializeNavigation;
+
         end
 
+        function step(obj)
+            fileEnd = 0;
+            count = 1;
+            firstLoop = 1;
+            sampleCount = 0;
+            navCount = 1;
+
+            while fileEnd == 0
+                % Processing next sample
+
+                % Kalman Time Update
+
+                % Calculate Correlators
+
+                % Perform Navigation Solution
+
+
+                if sampleCount > obj.sim.dataLength
+                    fileEnd = 1;
+                end
+            end
+        end
+
+    end
+
+    methods (Access = private)
+
+        function grabSettings(obj,settings)
+
+            obj.dir = settings.directories;
+            obj.gen = settings.general;
+            obj.sim = settings.simulation;
+            obj.traj = settings.trajectory;
+            obj.nav = settings.navigation;
+            obj.plotting = settings.plotting;
+
+        end
         function calcSVPos(obj)
 
             eph = obj.gen.ephemeris;
@@ -70,20 +120,6 @@ classdef CorrelatorSim < handle
         function initializeNavigation(obj)
 
             obj.navigation = NavigationDataClass(obj.numChannels,obj.dataLength);
-
-        end
-    end
-
-    methods (Access = private)
-
-        function grabSettings(obj,settings)
-
-            obj.dir = settings.directories;
-            obj.gen = settings.general;
-            obj.sim = settings.simulation;
-            obj.traj = settings.trajectory;
-            obj.nav = settings.navigation;
-            obj.plotting = settings.plotting;
 
         end
 

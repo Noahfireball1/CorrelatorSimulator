@@ -25,18 +25,11 @@ end
 settings = DataManager(inputFilePath);
 sim = CorrelatorSim(settings);
 
-%% Calculating Initial Satellite Positions
-sim.calcSVPos;
-%% Initialize Reference Data
-sim.initializeReference;
-%% initialize Estimated Data
-sim.initializeEstimate;
-%% Initialize Loop Filters
-sim.initializeLoopFilters;
-%% Initialize Scalar Data
-sim.initializeScalar;
-%% Initialize Navigation Data
-sim.initializeNavigation;
+%% Starting Simulation
+sim.step();
+
+%% Plotting
+
 
 %% Main Loop Parameters
 eof = 0;
