@@ -49,8 +49,19 @@ classdef CorrelatorSim < handle
             sampleCount = 0;
             navCount = 1;
 
+            textprogressbar('[correlator-sim] Simulation Progress: ')
+
             while fileEnd == 0
+
+                if mod(count,10) == 0
+                    try
+                        textprogressbar(count/10)
+                    catch
+                        textprogressbar('[correlator-sim] Simulation Progress: ')
+                    end
+                end
                 % Processing next sample
+                [~,reference] = TimeUpdate(obj.reference,1/obj.sim.sampleFreq);
 
                 % Kalman Time Update
 
@@ -62,7 +73,13 @@ classdef CorrelatorSim < handle
                 if sampleCount > obj.sim.dataLength
                     fileEnd = 1;
                 end
+                count = count + 1;
+                if count > 1000
+                    fileEnd = 1;
+                end
             end
+            fprintf('\n')
+            textprogressbar('[correlator-sim] Simulation Complete!')
         end
 
     end

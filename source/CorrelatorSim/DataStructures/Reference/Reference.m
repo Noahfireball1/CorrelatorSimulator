@@ -31,11 +31,11 @@ classdef Reference < dynamicprops
             obj.elevation = NaN(numChannels,navLength);
             obj.azimuth = NaN(numChannels,navLength);
             obj.rangeError = NaN(numChannels,navLength);
-            obj.positionError = NaN(numChannels,navLength);
-            obj.position = NaN(numChannels,navLength);
-            obj.Velocity = NaN(numChannels,navLength);
-            obj.clockBias = NaN(numChannels,navLength);
-            obj.clockDrift = NaN(numChannels,navLength);
+            obj.positionError = NaN(3,navLength);
+            obj.position = NaN(3,navLength);
+            obj.Velocity = NaN(3,navLength);
+            obj.clockBias = NaN(1,navLength);
+            obj.clockDrift = NaN(1,navLength);
 
             numSats = size(sim.satellitePositions.svPosX,1);
 
