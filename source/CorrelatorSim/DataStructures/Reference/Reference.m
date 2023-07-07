@@ -13,9 +13,11 @@ classdef Reference < dynamicprops
         rangeError
         positionError
         position
-        Velocity
+        velocity
         clockBias
         clockDrift
+
+        stateVector
     end
 
     methods
@@ -33,9 +35,11 @@ classdef Reference < dynamicprops
             obj.rangeError = NaN(numChannels,navLength);
             obj.positionError = NaN(3,navLength);
             obj.position = NaN(3,navLength);
-            obj.Velocity = NaN(3,navLength);
+            obj.velocity = NaN(3,navLength);
             obj.clockBias = NaN(1,navLength);
             obj.clockDrift = NaN(1,navLength);
+
+            obj.stateVector = [sim.traj.position';sim.traj.velocity';sim.traj.clockBias;sim.traj.clockDrift];
 
             numSats = size(sim.satellitePositions.svPosX,1);
 

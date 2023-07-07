@@ -53,6 +53,7 @@ classdef CorrelatorSim < handle
 
             while fileEnd == 0
 
+                % Processing next sample
                 if mod(count,10) == 0
                     try
                         textprogressbar(count/10)
@@ -60,12 +61,12 @@ classdef CorrelatorSim < handle
                         textprogressbar('[correlator-sim] Simulation Progress: ')
                     end
                 end
-                % Processing next sample
-                [~,reference] = TimeUpdate(obj.reference,1/obj.sim.sampleFreq);
-
+                
                 % Kalman Time Update
+                [~,obj.reference] = TimeUpdate(obj.reference,1/obj.sim.sampleFreq,count);
 
                 % Calculate Correlators
+                PropagateCorrelators(obj)
 
                 % Perform Navigation Solution
 
