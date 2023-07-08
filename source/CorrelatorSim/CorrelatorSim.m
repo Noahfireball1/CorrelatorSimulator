@@ -66,7 +66,7 @@ classdef CorrelatorSim < handle
                 [~,obj.reference] = TimeUpdate(obj.reference,1/obj.sim.sampleFreq,count);
 
                 % Calculate Correlators
-                PropagateCorrelators(obj)
+                PropagateCorrelators(obj,sampleCount)
 
                 % Perform Navigation Solution
 

@@ -18,6 +18,7 @@ classdef Reference < dynamicprops
         clockDrift
 
         stateVector
+        initialReceiveTime
     end
 
     methods
@@ -54,6 +55,7 @@ classdef Reference < dynamicprops
 
 
             end
+            obj.initialReceiveTime = obj.channel1.receiveTime;
 
         end
 

@@ -8,6 +8,7 @@ classdef Estimate < dynamicprops
         clockDrift = 0;
         stateVector
         stateCovariance = diag(10000*ones(1,8));
+        
 
     end
 
